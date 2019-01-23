@@ -3,14 +3,16 @@ import { ApolloClient } from 'apollo-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { HttpLink } from 'apollo-link-http';
 import { onError } from 'apollo-link-error';
-import { ApolloLink } from 'apollo-link';
+import { ApolloLink, concat } from 'apollo-link';
 import {
-  ApolloProvider
+  ApolloProvider,
+  graphql
 } from 'react-apollo';
 import gql from "graphql-tag";
-import {graphql} from 'graphql';
 import logo from './logo.svg';
 import './App.css';
+
+import ChannelsListWithData from './components/ChannelsListWithData';
 
 import { 
   makeExecutableSchema,
@@ -19,77 +21,17 @@ import {
  import { typeDefs } from './schema';
 
 const schema = makeExecutableSchema({ typeDefs });
-addMockFunctionsToSchema({ schema });
 
-const GQLMockHOC = (query) => (Component) => 
-  class GQLMock extends React.Component {
-
-    constructor(props) {
-      console.log(props);
-      super(props);
-      console.log('after super');
-      this.state = { data: null}
-    }
-
-    async componentWillMount() {
-      console.log('CWM');
-      console.log(schema)
-      const response = await graphql(schema, query)
-      console.log(response.data);
-      this.setState({ data: response.data })
-    }
-
-    render() {
-      console.log('render');
-      const { data } = this.state
-      return (data) ? <Component data={data} {...this.props} /> : <div>Loading</div>
-  }
-
-}
-
+const httpLink = new HttpLink({
+  uri: 'http://localhost:4000/graphql',
+  credentials: 'same-origin'
+})
 
 const client = new ApolloClient({
-  link: ApolloLink.from([
-    onError(({ graphQLErrors, networkError }) => {
-      if (graphQLErrors)
-        graphQLErrors.map(({ message, locations, path }) =>
-          console.log(
-            `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
-          ),
-        );
-      if (networkError) console.log(`[Network error]: ${networkError}`);
-    }),
-    new HttpLink({
-      uri: 'https://w5xlvm3vzz.lp.gql.zone/graphql',
-      credentials: 'same-origin'
-    })
-  ]),
+  link: httpLink,
   cache: new InMemoryCache()
 });
 
-const ChannelsList = ({data: {loading, error, channels}}) => {
-  if(loading) {
-    return <p>Loading...</p>
-  }
-  if(error) {
-    return <p>{error.message}</p>
-  }
-  return   <ul>
-      {channels.map (ch => <li key={ch.id} > {ch.name}</li>)}
-  </ul>
-};
-
-
-const channelsListQuery = gql`
-  query ChannelsListQuery {
-    channels {
-      id
-      name
-    }
-  }
-`;
-
-const ChannelsListWithData = GQLMockHOC(channelsListQuery)(ChannelsList);
 
 class App extends Component {
   render() {
