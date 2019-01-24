@@ -2,17 +2,21 @@ import React, { Component } from 'react';
 import { ApolloClient } from 'apollo-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { HttpLink } from 'apollo-link-http';
-import { onError } from 'apollo-link-error';
-import { ApolloLink, concat } from 'apollo-link';
 import {
-  ApolloProvider,
-  graphql
+  ApolloProvider
 } from 'react-apollo';
-import gql from "graphql-tag";
 import logo from './logo.svg';
 import './App.css';
+import {
+  BrowserRouter,
+  Link,
+  Route,
+  Switch,
+} from 'react-router-dom';
 
 import ChannelsListWithData from './components/ChannelsListWithData';
+import NotFound from './components/NotFound';
+import ChannelDetails from './components/ChannelDetails';
 
 import { 
   makeExecutableSchema,
@@ -37,13 +41,16 @@ class App extends Component {
   render() {
     return (
       <ApolloProvider client={client}>
-         <div className="App">
-           <div className="App-header">
-             <img src={logo} className="App-logo" alt="logo" />
-             <h2>Welcome to Apollo</h2>
-           </div>
-           <ChannelsListWithData />
-         </div>
+         <BrowserRouter>
+          <div className="App">
+            <Link to="/" className="navbar">React + GraphQL Tutorial</Link>
+            <Switch>
+              <Route exact path="/" component={ChannelsListWithData}/>
+              <Route path="/channel/:channelId" component={ChannelDetails}/>
+              <Route component={ NotFound }/>
+            </Switch>
+          </div>
+        </BrowserRouter>
        </ApolloProvider>
     );
   }

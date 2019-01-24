@@ -20,6 +20,21 @@ html, body {
   font-size: large;
 }
 
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+div.NotFound {
+  position: relative;
+  padding: 10px 50px;
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 300;
+  width: 200px;
+  text-align: left;
+  font-size: 16px;
+}
+
 .navbar {
   background-color: #333;
   color: #fff;
@@ -44,7 +59,7 @@ html, body {
 
 div.channelsList {
   padding: 0 30px;
-  position: relative;
+  position: fixed;
 }
 
 div.channel {
@@ -57,6 +72,10 @@ div.channel {
   text-align: left;
   padding-left: 30px;
   font-size: 16px;
+}
+
+div.optimistic {
+  color: rgba(255, 255, 255, 0.5);
 }
 
 div.channelsList input {
@@ -79,7 +98,7 @@ div.channelsList:before {
   width: 10px;
   /*background-color: #fff;*/
   position: absolute;
-  top: 7.5px;
+  top: 11px;
   left: 40px;
   color: rgba(255, 255, 255, 0.6);
 }
@@ -94,6 +113,70 @@ div.channel span {
   left: 10px;
 }
 
+div.channelName {
+  width: 200px;
+  background-color: transparent;
+  padding: 10px 50px 10px 30px;
+  outline: none;
+  border: none;
+  color: #fff;
+  font-size: 32px;
+  text-align: center;
+  color: #22A699;
+}
+
+div.messagesList {
+  padding: 0 30px;
+  position: fixed;
+}
+
+div.message {
+  position: relative;
+  padding: 10px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 300;
+  width: 200px;
+  text-align: left;
+  padding-left: 30px;
+  font-size: 16px;
+}
+
 div.optimistic {
   color: rgba(255, 255, 255, 0.5);
+}
+
+div.messagesList input {
+  width: 200px;
+  background-color: transparent;
+  padding: 10px 20px 10px 30px;
+  outline: none;
+  border: none;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 300;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  transition: 300ms all ease-out;
+}
+
+div.messageInput:before {
+  content: "+";
+  display: inline-block;
+  height: 0px;
+  width: 0px;
+  /*background-color: #fff;*/
+  position: relative;
+  top: -1px;
+  left: 8px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+div.messagesList input:focus {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+  transition: 300ms all ease-out;
+}
+
+div.message span {
+  position: absolute;
+  left: 10px;
 }

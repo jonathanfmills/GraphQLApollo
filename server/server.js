@@ -14,9 +14,6 @@ const server = express();
 
 server.use('*', cors({ origin: 'http://localhost:3000' }));
 
-server.use((req, res, next) => {
-  setTimeout(next, 2000);
-} )
 server.use('/graphiql', graphiqlExpress({
   endpointURL: '/graphql'
 }));
