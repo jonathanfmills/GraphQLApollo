@@ -42,4 +42,4 @@ type Subscription {
 `;
  
  const schema = makeExecutableSchema({ typeDefs, resolvers });
- export { schema };
+ export { schema, typeDefs, resolvers };
